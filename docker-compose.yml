@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    hostname: ghost-nginx
+    ports:
+      - 80:80
+    networks:
+      - frontend
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf:z
+    links:
+      - ghost
+    restart: always
+
+  ghost:
+    image: ghost:latest
+    container_name: ghost
+    hostname: ghost
+    networks:
+      - frontend
+    ports:
+      - 2368:2368
+    volumes:
+      - ./ghost/ghost-conf-dev.json:/var/lib/ghost/config.development.json:z #overwrite default settings
+      - ghost-content-dev:/var/lib/ghost/content:z
+    environment: # this section can be commented to start in dev mode by default
+      - NODE_ENV=development # set either production or development, then it will load the respective config
+    restart: always
+#    links:
+#      - mysql
+
+#  mysql:
+#    image: mysql:latest
+#    container_name: mysql
+#    volumes:
+#      - ./dbdata:/var/lib/mysql:z  # Persist storage
+#    expose:
+#      - "3306"
+#    environment:
+#      # Beware of special characters in password that can be interpreted by shell
+#      - MYSQL_ROOT_PASSWORD= #specify your root pass
+#      - MYSQL_DATABASE=ghostdata
+#      - MYSQL_USER=ghostusr
+#      - MYSQL_PASSWORD= xyx #please change this
+#    restart: always
+
+volumes:
+  ghost-content-dev:
+
+networks:
+  frontend:
