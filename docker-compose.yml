@@ -11,6 +11,7 @@ services:
       - frontend
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf:z
+      - ./nginx-content:/content
     links:
       - ghost
     restart: always

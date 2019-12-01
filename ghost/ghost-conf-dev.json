@@ -1,5 +1,5 @@
 {
-    "url": "http://blog-test.froestl.com",
+    "url": "http://blog.froestl.com",
     "database": {
         "client": "sqlite3",
         "connection": {
